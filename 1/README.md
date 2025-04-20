@@ -9,11 +9,9 @@
 
 | 파일명            | 설명 |
 |-------------------|------|
-| `scenario1-1.sh`  | 실습에 필요한 로그 및 백업 스크립트를 자동으로 구성하는 스크립트 |
-| `backup.sh`       | 로그/웹소스/설정파일을 백업하는 스크립트 (문제 포함) |
-| `vws-env`         | cron 환경의 PATH를 제한하는 설정 파일 |
-| `check_env.sh`    | 실습환경이 제대로 구성되었는지 확인하는 스크립트 |
-| `sample_logs/`    | 가짜 nginx, cron, messages 로그 파일이 들어있는 디렉터리 |
+| `0.set_scenario1_env.sh`  | 실습에 필요한 로그 및 백업 스크립트를 자동으로 구성하는 스크립트 |
+| `1.check_env.sh`    | 실습환경이 제대로 구성되었는지 확인하는 스크립트 |
+| `backup.sh`       | 로그/웹소스/설정파일을 백업하는 스크립트 |
 
 ---
 
@@ -26,18 +24,16 @@
 ```bash
 docker exec -it cent1 bash
 cd /root
-git clone https://github.com/your-repository/vws-scenario-1-1.git
-cd vws-scenario-1-1
+git clone https://github.com/bashbomb/vws-scenario.git
+cd vws-scenario/1
 ```
-
-> 🔧 `your-repository` 부분은 실제 리포지터리 주소로 교체해 주세요.
 
 ---
 
 ### 2. 실습환경 구성
 
 ```bash
-./scenario1-1.sh
+./0.set_scenario1_env.sh
 ```
 
 - 로그 생성, 백업 스크립트 배치, cron 설정까지 자동으로 구성됩니다.
@@ -47,7 +43,7 @@ cd vws-scenario-1-1
 ### 3. 환경 구성 점검
 
 ```bash
-./check_env.sh
+./1.check_env.sh
 ```
 
 - ✅ `실습 환경이 정상적으로 설정되었습니다.` → 시나리오 진행 가능
@@ -63,12 +59,12 @@ cd vws-scenario-1-1
 docker-compose restart cent1
 ```
 
-재시작 후 다시 컨테이너에 접속하고 실습 디렉터리로 이동합니다:
+재시작 후 다시 컨테이너에 접속한 뒤, 실습 디렉터리로 이동하여 환경 설정 스크립트를 다시 실행하세요:
 
 ```bash
 docker exec -it cent1 bash
-cd /root/vws-scenario-1-1
-./scenario1-1.sh
+cd /root/vws-scenario/1
+./0.set_scenario1_env.sh
 ```
 
 ---

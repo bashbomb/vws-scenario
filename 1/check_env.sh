@@ -9,7 +9,7 @@ errors=0
 grep -q 'error' /var/log/messages || errors=$((errors+1))
 [ -x /usr/local/bin/backup.sh ] || errors=$((errors+1))
 crontab -l | grep -q '/usr/local/bin/backup.sh' || errors=$((errors+1))
-[ -f /etc/cron.d/vws-env ] || errors=$((errors+1))
+grep -q 'PATH=/bin' /etc/cron.d/0hourly || errors=$((errors+1))
 
 # 결과 출력
 if [ "$errors" -eq 0 ]; then

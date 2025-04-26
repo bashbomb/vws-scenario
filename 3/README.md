@@ -1,7 +1,7 @@
-# 시나리오 1-2 – 문제없어 보이는데 DB에 접속이 왜 안돼!? 실습환경
+# 시나리오 1-3 – 우리 서버, 혹시 영국 출장 중...? 실습환경
 
-이 디렉터리는 시나리오 1-2 실습을 위한 환경설정 파일과 스크립트를 포함하고 있습니다.  
-강의 내용에 따라, 컨테이너 `cent2`에 접속한 상태에서 스크립트를 실행하여 실습환경을 구성합니다.
+이 디렉터리는 시나리오 1-3 실습을 위한 환경설정 파일과 스크립트를 포함하고 있습니다.
+강의 내용에 따라, 컨테이너 `cent1`에 접속한 상태에서 스크립트를 실행하여 실습환경을 구성합니다.
 
 ---
 
@@ -9,7 +9,7 @@
 
 | 파일명                 | 설명 |
 |----------------------|-----|
-| `0.set_scenario2_env.sh` | 실습을 위한 DB 유저를 설정하는 스크립트 |
+| `0.set_scenario3_env.sh` | 실습을 위한 서버 시간대 및 DB 환경을 설정하는 스크립트 |
 | `1.check_env.sh`         | 실습환경이 정상적으로 구성되었는지 확인하는 스크립트 |
 
 ---
@@ -18,13 +18,13 @@
 
 ### 1. 실습 시나리오 파일 클론
 
-컨테이너 `cent2`에 접속한 뒤, 아래와 같이 리포지터리를 클론합니다:
+컨테이너 `cent1`에 접속한 뒤, 아래와 같이 리포지터리를 클론합니다:
 
 ```bash
-docker exec -it cent2 bash
+docker exec -it cent1 bash
 cd /root
 git clone https://github.com/bashbomb/vws-scenario.git
-cd vws-scenario/2
+cd vws-scenario/3
 ```
 
 ---
@@ -32,11 +32,8 @@ cd vws-scenario/2
 ### 2. 실습환경 구성
 
 ```bash
-./0.set_scenario2_env.sh
+./0.set_scenario3_env.sh
 ```
-
-- DB서버(`cent2`)에 로컬호스트 전용 `vwswebdb` 유저를 등록합니다.
-- 패스워드는 스크립트를 실행하면 확인하실 수 있습니다.
 
 ---
 
@@ -53,18 +50,18 @@ cd vws-scenario/2
 
 ### 컨테이너 재시작 방법
 
-> 현재 `cent2` 컨테이너 안에 있는 상태라면, 아래 명령어를 실행하기 전에 먼저 **exit** 명령어로 나와야 합니다.
+> 현재 `cent1` 컨테이너 안에 있는 상태라면, 아래 명령어를 실행하기 전에 먼저 **exit** 명령어로 나와야 합니다.
 
 ```bash
-docker-compose restart cent2
+docker-compose restart cent1 cent2 cent3
 ```
 
 재시작 후 다시 컨테이너에 접속한 뒤, 실습 디렉터리로 이동하여 환경 설정 스크립트를 다시 실행하세요:
 
 ```bash
-docker exec -it cent2 bash
-cd /root/vws-scenario/2
-./0.set_scenario2_env.sh
+docker exec -it cent1 bash
+cd /root/vws-scenario/3
+./0.set_scenario3_env.sh
 ```
 
 ---
@@ -81,5 +78,5 @@ cd /root/vws-scenario/2
 
 # 라이선스
 
-본 프로젝트는 CC BY-NC 4.0 라이선스에 따라 제공되며, 비영리 용도로 자유롭게 사용 가능합니다.  
+본 프로젝트는 CC BY-NC 4.0 라이선스에 따라 제공되며, 비영리 용도로 자유롭게 사용 가능합니다.
 자세한 내용은 [LICENSE](../LICENSE) 파일을 확인해주세요.

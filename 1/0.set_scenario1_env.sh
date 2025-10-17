@@ -3,7 +3,7 @@
 # 0. 초기화
 crontab -r
 rm -f /usr/local/bin/backup.sh /dev/null 2>&1
-pkill crond
+pkill crond >/dev/null 2>&1
 
 # 1. 로그 디렉토리 생성
 mkdir -p /var/log/nginx

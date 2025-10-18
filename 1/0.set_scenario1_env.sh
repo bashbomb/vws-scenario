@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 0. 초기화
-crontab -r
+crontab -r >/dev/null 2>&1
 rm -f /usr/local/bin/backup.sh /dev/null 2>&1
 pkill crond >/dev/null 2>&1
 
@@ -36,4 +36,4 @@ echo -e "SHELL=/bin/bash\nPATH=/bin" > /etc/cron.d/0hourly
 ( crontab -l 2>/dev/null; echo '0 0 * * * /usr/local/bin/backup.sh ' ) | crontab -
 
 # 6. crond 실행
-/usr/sbin/crond &
+/usr/sbin/crond -n -x sch,proc,pars >> /var/log/cron 2>&1 &

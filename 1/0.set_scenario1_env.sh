@@ -36,5 +36,9 @@ echo -e "SHELL=/bin/bash\nPATH=/bin" > /etc/cron.d/0hourly
 # 5. crontab 등록 (자정 실행)
 ( crontab -l 2>/dev/null; echo '0 0 * * * /usr/local/bin/backup.sh ' ) | crontab -
 
-# 6. crond 실행
-/usr/sbin/crond -n >> /var/log/cron 2>&1 &
+# 6. rsyslogd 실행
+/usr/sbin/rsyslogd &
+
+# 7. crond 실행
+/usr/sbin/crond -s &
+

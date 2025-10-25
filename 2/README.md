@@ -35,7 +35,7 @@ cd vws-scenario/2
 ./0.set_scenario2_env.sh
 ```
 
-- DB서버(`cent2`)에 로컬호스트 전용 `vwswebdb` 유저를 등록합니다.
+- DB서버(`cent2`)에 `vwswebdb` 유저를 등록합니다.
 - 패스워드는 스크립트를 실행하면 확인하실 수 있습니다.
 
 ---

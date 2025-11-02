@@ -79,6 +79,12 @@ echo "${next_min} ${hour} * * * /root/SHELL/log_backup.sh &" >> /tmp/current_cro
 crontab /tmp/current_cron
 rm -f /tmp/current_cron
 
+# 6. rsyslogd 실행
+/usr/sbin/rsyslogd &
+
+# 7. crond 실행
+/usr/sbin/crond -s &
+
 # 완료 안내
 echo "---------------------------------------------------"
 echo "환경 설정이 완료되었습니다!"

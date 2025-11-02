@@ -20,18 +20,18 @@ if [ -d /var/log/nginx ]; then
 fi
 
 # 3. access 로그 파일 존재 확인
-if [ -f /var/log/nginx/VWS.access.log ]; then
+if [ -f /usr/local/nginx/logs/VWS.access.log ]; then
     ACCESS_LOG_CHECK=true
 fi
 
 # 4. error 로그 파일 존재 확인
-if [ -f /var/log/nginx/VWS.error.log ]; then
+if [ -f /usr/local/nginx/logs/VWS.error.log ]; then
     ERROR_LOG_CHECK=true
 fi
 
 # 5. access 로그 파일 크기 확인 (1GB = 1073741824 bytes)
-if [ -f /var/log/nginx/VWS.access.log ]; then
-    FILE_SIZE=$(stat -c%s /var/log/nginx/VWS.access.log)
+if [ -f /usr/local/nginx/logs/VWS.access.log ]; then
+    FILE_SIZE=$(stat -c%s /usr/local/nginx/logs/VWS.access.log)
     if [ "${FILE_SIZE}" -ge 1073741824 ]; then
         ACCESS_LOG_SIZE_CHECK=true
     fi

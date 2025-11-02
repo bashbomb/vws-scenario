@@ -42,3 +42,10 @@ echo -e "SHELL=/bin/bash\nPATH=/bin" > /etc/cron.d/0hourly
 # 7. crond 실행
 /usr/sbin/crond -s &
 
+# 8. 완료 안내
+echo
+echo "---------------------------------------------------"
+echo "환경 설정이 완료되었습니다!"
+echo "1.check_env.sh를 실행하여 환경을 점검하세요."
+echo "---------------------------------------------------"
+echo

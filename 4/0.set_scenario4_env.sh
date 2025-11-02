@@ -8,11 +8,11 @@ cp -f ./nginx_scenario4.conf /etc/nginx/nginx.conf
 /usr/sbin/nginx -s reload
 
 # 2. 로그 디렉터리 생성
-mkdir -p /usr/local/nginx/logs
+mkdir -p /var/log/nginx
 
 # 3. 로그 준비
-touch /var/logs/nginx/VWS.error.log
-LOG_FILE="/var/logs/nginx/VWS.access.log"
+touch /var/log/nginx/VWS.error.log
+LOG_FILE="/var/log/nginx/VWS.access.log"
 > "${LOG_FILE}"
 
 # 초기 1000줄 생성
@@ -31,7 +31,7 @@ for i in $(seq 1 1000); do
 done
 
 # 더미파일 추가
-DUMMY="/var/logs/nginx/dummyfile"
+DUMMY="/var/log/nginx/dummyfile"
 dd if=/dev/urandom of="${DUMMY}" bs=1M count=1024 status=progress
 cat "${DUMMY}" >> "${LOG_FILE}"
 rm -f "${DUMMY}"

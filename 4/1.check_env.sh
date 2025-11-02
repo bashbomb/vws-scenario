@@ -8,6 +8,7 @@ LOG_DIR_CHECK=false
 ACCESS_LOG_CHECK=false
 ERROR_LOG_CHECK=false
 ACCESS_LOG_SIZE_CHECK=false
+CRON_JOB_CHECK=false
 
 # 1. nginx 설정 확인
 if grep -q "log_format vws_main" /etc/nginx/nginx.conf; then
@@ -37,8 +38,13 @@ if [ -f /usr/local/nginx/logs/VWS.access.log ]; then
     fi
 fi
 
+# 6. log_backup.sh 크론탭 등록 확인
+if crontab -l 2>/dev/null | grep -q "/root/SHELL/log_backup.sh"; then
+    CRON_JOB_CHECK=true
+fi
+
 # 최종 결과
-if ${NGINX_CONF_CHECK} && ${LOG_DIR_CHECK} && ${ACCESS_LOG_CHECK} && ${ERROR_LOG_CHECK} && ${ACCESS_LOG_SIZE_CHECK}; then
+if ${NGINX_CONF_CHECK} && ${LOG_DIR_CHECK} && ${ACCESS_LOG_CHECK} && ${ERROR_LOG_CHECK} && ${ACCESS_LOG_SIZE_CHECK} && ${CRON_JOB_CHECK}; then
     echo "환경 설정이 정상적으로 완료되었습니다."
 else
     echo "일부 설정이 정상적으로 적용되지 않았습니다."

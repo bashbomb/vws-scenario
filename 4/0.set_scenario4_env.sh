@@ -1,7 +1,8 @@
 #!/bin/bash
-
 # 0.set_scenario4_env.sh
 # VWS 시나리오 1-4 실습환경 설정 스크립트
+
+set -euo pipefail
 
 # 1. nginx 설정 파일 교체
 cp -f ./nginx_scenario4.conf /etc/nginx/nginx.conf
@@ -23,7 +24,6 @@ for i in $(seq 1 1000); do
   LOG_TIME=$(date -d "@${CURRENT_TIME}" "+%d/%b/%Y:%H:%M:%S +0900")
   echo "192.168.0.$((RANDOM%255)) - - [${LOG_TIME}] \"GET /index.html HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36\"" >> "${LOG_FILE}"
   CURRENT_TIME=$((CURRENT_TIME + 2))
-
   if (( i % 50 == 0 )); then
     PERCENT=$(( i / 10 ))
     printf "\r페이즈1 진행 중: %3d%%" "${PERCENT}"
@@ -41,7 +41,6 @@ for i in $(seq 1 1000); do
   LOG_TIME=$(date -d "@${CURRENT_TIME}" "+%d/%b/%Y:%H:%M:%S +0900")
   echo "192.168.0.$((RANDOM%255)) - - [${LOG_TIME}] \"POST /login HTTP/1.1\" 200 2048 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36\"" >> "${LOG_FILE}"
   CURRENT_TIME=$((CURRENT_TIME + 2))
-
   if (( i % 50 == 0 )); then
     PERCENT=$(( i / 10 ))
     printf "\r페이즈2 진행 중: %3d%%" "${PERCENT}"
@@ -55,21 +54,33 @@ done
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/89.0"
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
   )
-
   for i in $(seq 1 5000); do
     RANDOM_IP="192.168.$((RANDOM % 256)).$((RANDOM % 256))"
     UA=${USER_AGENTS[$((RANDOM % ${#USER_AGENTS[@]}))]}
-    #wget --header="X-Forwarded-For: ${RANDOM_IP}" --user-agent="${UA}" -q -O /dev/null http://localhost/index.html
     curl -s -A "${UA}" http://cent1/index.html --header "X-Forwarded-For: ${RANDOM_IP}" > /dev/null
     sleep 1
   done
 ) &
 
+# 5. 로그 백업 스크립트 등록 및 크론탭 추가
+mkdir -p /root/SHELL
+cp -f ./log_backup.sh /root/SHELL/log_backup.sh
+chmod +x /root/SHELL/log_backup.sh
+
+current_min=$(date +%M)
+next_min=$(( (10#$current_min + 1) % 60 ))
+hour=$(date +%H)
+if [ "${next_min}" -eq 0 ]; then
+  hour=$(( (10#$hour + 1) % 24 ))
+fi
+
+crontab -l 2>/dev/null > /tmp/current_cron || true
+echo "${next_min} ${hour} * * * /root/SHELL/log_backup.sh &" >> /tmp/current_cron
+crontab /tmp/current_cron
+rm -f /tmp/current_cron
+
 # 완료 안내
-echo
 echo "---------------------------------------------------"
 echo "환경 설정이 완료되었습니다!"
 echo "1.check_env.sh를 실행하여 환경을 점검하세요."
 echo "---------------------------------------------------"
-echo
-

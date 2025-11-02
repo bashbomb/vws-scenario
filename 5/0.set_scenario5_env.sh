@@ -2,13 +2,6 @@
 # 0.set_scenario5_env.sh
 # 시나리오5 - 착한 사람에게만 보이는 백업파일!?
 
-echo
-echo "---------------------------------------------------"
-echo " Virtual Web Service - 시나리오 1-5 환경 설정"
-echo " 현재 cent1에서 전체 서버 준비 작업을 진행합니다."
-echo "---------------------------------------------------"
-echo
-
 # 1. 백업 스크립트 복사
 cp -f ./backup.sh /root/backup.sh
 chmod +x /root/backup.sh

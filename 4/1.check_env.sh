@@ -3,12 +3,6 @@
 # 1.check_env.sh
 # VWS 시나리오 1-4 실습 환경 확인 스크립트
 
-echo
-echo "---------------------------------------------------"
-echo " Virtual Web Service - 시나리오 1-4 환경 점검"
-echo "---------------------------------------------------"
-echo
-
 NGINX_CONF_CHECK=false
 LOG_DIR_CHECK=false
 ACCESS_LOG_CHECK=false

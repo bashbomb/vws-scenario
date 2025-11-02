@@ -10,7 +10,7 @@ ERROR_LOG_CHECK=false
 ACCESS_LOG_SIZE_CHECK=false
 
 # 1. nginx 설정 확인
-if grep -q "log_format main" /etc/nginx/nginx.conf; then
+if grep -q "log_format vws_main" /etc/nginx/nginx.conf; then
     NGINX_CONF_CHECK=true
 fi
 

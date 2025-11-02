@@ -5,7 +5,7 @@
 
 # 1. nginx 설정 파일 교체
 cp -f ./nginx_scenario4.conf /etc/nginx/nginx.conf
-nginx -s reload
+/usr/sbin/nginx -s reload
 
 # 2. 로그 디렉터리 생성
 mkdir -p /usr/local/nginx/logs
@@ -26,14 +26,15 @@ for i in $(seq 1 1000); do
 
   if (( i % 50 == 0 )); then
     PERCENT=$(( i / 10 ))
-    printf "\r진행 중: %3d%%" "${PERCENT}"
+    printf "\r페이즈1 진행 중: %3d%%" "${PERCENT}"
   fi
 done
 
-# 1GB 더미파일 추가
-dd if=/dev/zero of=dummyfile bs=1M count=1024 status=none
-cat dummyfile >> "${LOG_FILE}"
-rm -f dummyfile
+# 더미파일 추가
+DUMMY="/usr/local/nginx/logs/dummyfile"
+dd if=/dev/urandom of="${DUMMY}" bs=1M count=1024 status=progress
+cat "${DUMMY}" >> "${LOG_FILE}"
+rm -f "${DUMMY}"
 
 # 마지막 1000줄 생성
 for i in $(seq 1 1000); do
@@ -43,7 +44,7 @@ for i in $(seq 1 1000); do
 
   if (( i % 50 == 0 )); then
     PERCENT=$(( i / 10 ))
-    printf "\r진행 중: %3d%%" "${PERCENT}"
+    printf "\r페이즈2 진행 중: %3d%%" "${PERCENT}"
   fi
 done
 
@@ -58,7 +59,8 @@ done
   for i in $(seq 1 5000); do
     RANDOM_IP="192.168.$((RANDOM % 256)).$((RANDOM % 256))"
     UA=${USER_AGENTS[$((RANDOM % ${#USER_AGENTS[@]}))]}
-    wget --header="X-Forwarded-For: ${RANDOM_IP}" --user-agent="${UA}" -q -O /dev/null http://localhost/index.html
+    #wget --header="X-Forwarded-For: ${RANDOM_IP}" --user-agent="${UA}" -q -O /dev/null http://localhost/index.html
+    curl -s -A "${UA}" http://cent1/index.html --header "X-Forwarded-For: ${RANDOM_IP}" > /dev/null
     sleep 1
   done
 ) &

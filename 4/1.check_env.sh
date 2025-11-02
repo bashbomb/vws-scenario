@@ -39,10 +39,8 @@ fi
 
 # 최종 결과
 if ${NGINX_CONF_CHECK} && ${LOG_DIR_CHECK} && ${ACCESS_LOG_CHECK} && ${ERROR_LOG_CHECK} && ${ACCESS_LOG_SIZE_CHECK}; then
-    echo ""
     echo "환경 설정이 정상적으로 완료되었습니다."
 else
-    echo ""
     echo "일부 설정이 정상적으로 적용되지 않았습니다."
     echo "컨테이너를 재시작하고 실습환경 설정 스크립트를 다시 실행해주세요."
 fi

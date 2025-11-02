@@ -23,7 +23,6 @@ if ! ssh cent3 "ps -ef | grep rpc.mountd | grep defunct" >/dev/null 2>&1; then
 fi
 
 # 결과 출력
-echo
 if [ ${ERROR} -eq 0 ]; then
   echo "환경 설정이 정상적으로 완료되었습니다."
 else

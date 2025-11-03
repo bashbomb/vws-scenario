@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # 0. 초기화
-crontab -r >/dev/null 2>&1
-cp -f /dev/null /var/log/cron
-rm -f /usr/local/bin/backup.sh /dev/null 2>&1
-pkill crond >/dev/null 2>&1
+crontab -r >/dev/null 2>&1 || true
+: > /var/log/cron
+rm -f /usr/local/bin/backup.sh >/dev/null 2>&1 || true
+pkill crond >/dev/null 2>&1 || true
 
 # 1. 로그 디렉토리 생성
 mkdir -p /var/log/nginx
-mount /mnt
+mountpoint -q /mnt || mount /mnt 2>/dev/null || true
 mkdir -p /mnt/backup/logs
 
 # 2. 샘플 로그 삽입
@@ -30,8 +30,10 @@ echo "${TODAY} 00:00:01 localhost CROND[2222]: (root) CMD (/usr/local/bin/backup
 cp backup.sh /usr/local/bin/backup.sh
 chmod +x /usr/local/bin/backup.sh
 
-# 4. PATH 제한
-echo -e "SHELL=/bin/bash\nPATH=/bin" > /etc/cron.d/0hourly
+# 4. PATH 관련 설정
+if grep -q '^PATH=' /etc/crontab; then
+  sed -i 's/^PATH/#PATH/' /etc/crontab
+fi
 
 # 5. crontab 등록 (자정 실행)
 ( crontab -l 2>/dev/null; echo '0 0 * * * /usr/local/bin/backup.sh ' ) | crontab -
@@ -43,9 +45,7 @@ echo -e "SHELL=/bin/bash\nPATH=/bin" > /etc/cron.d/0hourly
 /usr/sbin/crond -s &
 
 # 8. 완료 안내
-echo
 echo "---------------------------------------------------"
 echo "환경 설정이 완료되었습니다!"
 echo "1.check_env.sh를 실행하여 환경을 점검하세요."
 echo "---------------------------------------------------"
-echo

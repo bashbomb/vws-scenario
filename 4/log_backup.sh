@@ -6,7 +6,7 @@ mkdir -p "${dst_dir}"
 
 # 실행 시작 시각 (epoch)
 start_time=$(date +%s)
-duration=$((60 * 30))  # 30분(1800초)
+duration=$((60 * 50))  # 50분(3000초)
 
 # 병렬 I/O 백업 프로세스 시작
 for i in {1..4}; do
@@ -14,7 +14,7 @@ for i in {1..4}; do
     bs=4K count=250000 oflag=dsync status=none &
 done
 
-# 30분 동안 실행
+# 50분 동안 실행
 while true; do
   now=$(date +%s)
   elapsed=$(( now - start_time ))

@@ -9,7 +9,7 @@ cp -f ./nginx_scenario4.conf /etc/nginx/nginx.conf
 /usr/sbin/nginx -s reload
 
 # 2. 로그 디렉터리 생성
-mkdir -p /var/log/nginx
+mkdir -p /usr/local/nginx/logs
 
 # 3. 로그 준비
 touch /usr/local/nginx/logs/VWS.error.log
